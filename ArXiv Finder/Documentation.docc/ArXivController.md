@@ -1,16 +1,18 @@
 # ArXivController
 
-The main controller that handles the business logic of the ArXiv Finder application.
+The main view model that handles the business logic of the ArXiv Finder application.
 
 ## Overview
 
-``ArXivController`` is the central component of the MVC pattern that acts as an intermediary between the data models (``ArXivPaper``) and SwiftUI views. It manages application state, coordinates asynchronous operations, and provides a reactive interface for the UI.
+``ArXivController`` is the central component of the MVVM pattern that acts as an intermediary between the data models (``ArXivPaper``) and SwiftUI views. It manages application state, coordinates asynchronous operations, and provides a reactive interface for the UI.
 
-This class is designed following the principles of:
-- **Separation of responsibilities** in the MVC pattern
-- **Reactivity** with `@ObservableObject` and `@Published`
-- **Modern concurrency** with async/await and `@MainActor`
-- **Centralized and predictable** state management
+### Responsibilities
+
+- **Separation of responsibilities** in the MVVM pattern
+- **State management** using `@Published` properties
+- **Business logic** for searching and filtering
+- **API integration** through ``ArXivService``
+- **Persistence** management with SwiftData
 
 ## Controller Architecture
 
@@ -218,13 +220,13 @@ func searchPapers(query: String) async {
 
 ## Implemented Design Patterns
 
-### 🎯 MVC Pattern
+### 🎯 MVVM Pattern
 
-The controller strictly implements the MVC pattern:
+The controller strictly implements the MVVM pattern:
 
-- **Model**: ``ArXivPaper`` - Pure data without business logic
-- **View**: SwiftUI Views - Only presentation, no business logic
-- **Controller**: ``ArXivController`` - All business logic and coordination
+- **Model**: ``ArXivPaper`` - Data structure
+- **View**: SwiftUI Views - Visual representation
+- **ViewModel**: ``ArXivController`` - All business logic and coordination
 
 ### 🔄 Observer Pattern
 
@@ -275,7 +277,7 @@ private func handleError(_ error: Error) {
 ### 📊 Error States
 
 ```swift
-/// Possible controller states
+/// Possible view model states
 enum ControllerState {
     case idle
     case loading
@@ -349,7 +351,14 @@ func handleiOSSpecificLogic() {
 #endif
 ```
 
-## Controller Lifecycle
+## ViewModel Lifecycle
+
+The view model is designed to be lifecycle-aware:
+
+1. **Initialization**: Sets up initial state and subscribers
+2. **Loading**: Fetches initial data on appearance
+3. **Updates**: Reacts to user input and updates state
+4. **Cleanup**: Cancels tasks when no longer needed
 
 ### 🌱 Initialization
 
@@ -425,9 +434,12 @@ struct ArXivControllerConfig {
 }
 ```
 
-## Related Resources
+### See Also
 
-- ``ArXivPaper`` - Main data model
-- ``ArXivService`` - Service for API communication
-- ``MainView`` - Main view using the controller
-- ``PapersListView`` - List view managed by the controller 
+
+
+- ``MainView`` - Main view using the view model
+
+- ``PapersListView`` - List view managed by the view model
+
+ 

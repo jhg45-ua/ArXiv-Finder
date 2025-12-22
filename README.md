@@ -28,7 +28,7 @@ ArXiv Finder allows users to search, explore, and save scientific papers from Ar
 
 ## 📱 Architecture
 
-The project follows the **Model-View-Controller (MVC)** pattern with modern Swift best practices:
+The project follows the **Model-View-ViewModel (MVVM)** pattern with modern Swift best practices:
 
 ### Models
 - `ArXivPaper`: SwiftData model for scientific papers with favorites support
@@ -42,8 +42,8 @@ The project follows the **Model-View-Controller (MVC)** pattern with modern Swif
 - `ArXivPaperRow`: Reusable paper row component
 - `SettingsView`: Application configuration
 
-### Controllers
-- `ArXivController`: Centralized business logic and state management
+### ViewModels
+- `ArXivController`: Centralized business logic and state management (ViewModel)
 
 ### Services
 - `ArXivService`: ArXiv API communication using ArXivKit with category support
@@ -52,7 +52,7 @@ The project follows the **Model-View-Controller (MVC)** pattern with modern Swif
 
 For detailed information, consult the integrated Xcode documentation:
 
-- **MVC Architecture**: Comprehensive DocC documentation for design patterns and implementation details
+- **MVVM Architecture**: Comprehensive DocC documentation for design patterns and implementation details
 - **ArXiv API Integration**: Complete ArXivKit usage documentation available in DocC
 - **Search Functionality**: Advanced search capabilities including history and category filtering
 - **Favorites System**: Complete favorites management documentation
@@ -151,7 +151,7 @@ ArXiv Finder/
 │   ├── ArXivPaperRow.swift      # Reusable paper row component
 │   └── SettingsView.swift       # Application settings
 ├── Controllers/
-│   └── ArXivController.swift    # Business logic and state management
+│   └── ArXivController.swift    # Business logic and state management (ViewModel)
 ├── Services/
 │   └── ArXivService.swift       # ArXiv API service using ArXivKit
 ├── Assets.xcassets/             # App icons and visual resources

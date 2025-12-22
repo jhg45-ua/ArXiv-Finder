@@ -1,34 +1,33 @@
 # MainView
 
-The main view of the ArXiv Finder application implementing the MVC pattern.
+The main view of the ArXiv Finder application implementing the MVVM pattern.
 
 ## Overview
 
-``MainView`` is the central user interface component that acts as the main view in the MVC pattern. It provides an adaptive experience that works on both iOS and macOS, using native design best practices for each platform.
+``MainView`` is the central user interface component that acts as the main view in the MVVM pattern. It provides an adaptive experience that works on both iOS and macOS, using native design best practices for each platform.
 
-This view is designed following principles of:
-- **Separation of responsibilities** in the MVC pattern
-- **Multiplatform adaptability** with conditional code
+### Responsibilities
+
+- **Separation of responsibilities** in the MVVM pattern
+- **Coordination** of main navigation
 - **Reactivity** through binding with ``ArXivController``
-- **Accessibility** with full support for assistive technologies
+- **Adaptation** to platform context (iOS/macOS)
 
 ## View Architecture
 
-### 🎭 MVC Pattern Implementation
+### 🎭 MVVM Pattern Implementation
 
-The view strictly implements the MVC pattern:
+The view strictly implements the MVVM pattern:
 
 ```swift
-/// MVC Architecture:
-/// - View: This view handles only presentation
-/// - Controller: ArXivController manages all business logic
-/// - Model: ArXivPaper represents paper data
 struct MainView: View {
-    /// Controller that handles business logic
-    @StateObject private var controller = ArXivController()
+    /// MVVM Architecture:
+    /// - ViewModel: ArXivController manages all business logic
+    /// - View: MainView presents the data
     
-    /// Selected paper in macOS for NavigationSplitView
-    @State private var selectedPaper: ArXivPaper?
+    /// ViewModel that handles business logic
+    @StateObject private var controller = ArXivController()
+    // ...
 }
 ```
 
@@ -130,20 +129,21 @@ private var iOSInterface: some View {
 
 ## Integrated Components
 
-### 🔗 Controller Integration
+### 🔗 ViewModel Integration
 
-The view integrates seamlessly with the controller:
+The view integrates seamlessly with the view model:
 
 ```swift
-/// Reactive binding with the controller
-@StateObject private var controller = ArXivController()
-
-/// Automatic update when data changes
-var body: some View {
-    // The view automatically updates when
-    // the controller's @Published properties change
-    List(controller.latestPapers) { paper in
-        ArXivPaperRow(paper: paper)
+struct MainView: View {
+    /// Reactive binding with the view model
+    @StateObject private var controller = ArXivController()
+    
+    var body: some View {
+        // The view updates automatically when
+        // the view model's @Published properties change
+        List(controller.latestPapers) { paper in
+            // ...
+        }
     }
 }
 ```
@@ -359,7 +359,7 @@ struct MainViewConfig {
 
 ## Related Resources
 
-- ``ArXivController`` - Main application controller
+- ``ArXivController`` - Main application view model
 - ``SidebarView`` - Navigation sidebar
 - ``PapersListView`` - Article list
 - ``PaperDetailView`` - Article detail view

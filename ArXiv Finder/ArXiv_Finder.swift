@@ -12,7 +12,7 @@ import SwiftData
  * ARXIV FINDER APPLICATION ARCHITECTURE
  * =====================================
  * 
- * This application follows the Model-View-Controller (MVC) pattern:
+ * This application follows the Model-View-ViewModel (MVVM) pattern:
  * 
  * MODELS (Models):
  * - ArXivPaper: Data model for scientific papers with SwiftData
@@ -24,12 +24,11 @@ import SwiftData
  * - ArXivPaperRow: Individual paper row
  * - PaperDetailView: Complete detail of a paper
  * 
- * CONTROLLERS (Controllers):
+ * VIEWMODELS (Controllers):
  * - ArXivController: Business logic and state management
  * 
  * SERVICES (Services):
  * - ArXivService: Communication with the ArXiv API
- * - ArXivSimpleParser: Custom XML parser
  * 
  * TECHNICAL FEATURES:
  * - Multiplatform: iOS and macOS with adaptive UI

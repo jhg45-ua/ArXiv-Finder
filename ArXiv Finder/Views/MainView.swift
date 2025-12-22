@@ -8,21 +8,21 @@
 import SwiftUI
 import SwiftData
 
-/// Main view of the ArXiv Finder application following the MVC pattern
+/// Main view of the ArXiv Finder application following the MVVM pattern
 /// Provides an adaptive interface that works on both iOS and macOS
 ///
 /// On iOS uses NavigationStack for hierarchical navigation
 /// On macOS uses NavigationSplitView for three-column navigation
 ///
-/// MVC Architecture:
+/// MVVM Architecture:
 /// - View: This view handles only presentation
-/// - Controller: ArXivController manages all business logic
+/// - ViewModel: ArXivController manages all business logic
 /// - Model: ArXivPaper represents paper data
 struct MainView: View {
     /// Model context for SwiftData
     @Environment(\.modelContext) private var modelContext
     
-    /// Controller that handles business logic
+    /// ViewModel that handles business logic
     @StateObject private var controller = ArXivController()
     
     /// Selected paper in macOS for NavigationSplitView

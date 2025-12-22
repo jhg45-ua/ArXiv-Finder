@@ -17,9 +17,9 @@ import SwiftUI
 /// - Integrated search to filter papers
 /// - Adaptive navigation (NavigationLink in iOS, binding in macOS)
 ///
-/// MVC architecture:
+/// MVVM architecture:
 /// - This view only handles the presentation of data
-/// - All business logic is delegated to the ArXivController
+/// - All business logic is delegated to the ArXivController (ViewModel)
 /// - The data comes from the ArXivPaper model
 struct PapersListView: View {
     /// List of papers to display
@@ -31,7 +31,7 @@ struct PapersListView: View {
     /// Current error message (if exists)
     @Binding var errorMessage: String?
     
-    /// Controller to handle favorite logic
+    /// ViewModel to handle favorite logic
     let controller: ArXivController?
     
     /// Function to load the latest papers

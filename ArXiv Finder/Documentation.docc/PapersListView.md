@@ -4,7 +4,7 @@ Specialized view for displaying ArXiv paper lists with search and filtering func
 
 ## Overview
 
-``PapersListView`` is a specialized SwiftUI view that displays ArXiv paper lists with advanced search, filtering, and navigation functionalities. It forms part of the MVC pattern as a view that communicates exclusively with ``ArXivController`` to obtain data and notify user actions.
+``PapersListView`` is a specialized SwiftUI view that displays ArXiv paper lists with advanced search, filtering, and navigation functionalities. It forms part of the MVVM pattern as a view that communicates exclusively with ``ArXivController`` (ViewModel) to obtain data and notify user actions.
 
 This view is designed following principles of:
 - **Reusability** in multiple application contexts
@@ -19,9 +19,11 @@ This view is designed following principles of:
 The view is composed of multiple specialized components:
 
 ```swift
-/// Main paper list view
+/// MVVM architecture:
+/// - The view only handles presentation
+/// - All business logic is delegated to the ArXivController (ViewModel)
 struct PapersListView: View {
-    /// Controller that provides the data
+    /// ViewModel that provides the data
     @ObservedObject var controller: ArXivController
     
     /// Selected paper for navigation
@@ -503,7 +505,7 @@ struct PapersListConfig {
 
 ## Related Resources
 
-- ``ArXivController`` - Controller that provides the data
+- ``ArXivController`` - ViewModel that provides the data
 - ``ArXivPaperRow`` - Individual article component
 - ``MainView`` - Main view containing the list
 - ``PaperDetailView`` - Detail view for selected articles

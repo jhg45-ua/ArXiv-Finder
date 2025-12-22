@@ -69,13 +69,13 @@ The model is optimized for efficient searches:
 - **Synchronization**: Automatic updates with the latest ArXiv data
 - **Performance optimization**: Lazy loading of papers for large lists
 
-### 🔄 MVC Integration
+### 🔄 MVVM Integration
 
-The model integrates seamlessly with the MVC pattern:
+The model integrates seamlessly with the MVVM pattern:
 
-- **Model**: ``ArXivPaper`` encapsulates all paper data
-- **View**: SwiftUI views automatically update when data changes
-- **Controller**: ``ArXivController`` handles CRUD operations and business logic
+- **Model**: ``ArXivPaper`` represents the data and business logic
+- **View**: SwiftUI views display the data from the model
+- **ViewModel**: ``ArXivController`` handles CRUD operations and state management
 
 ## Usage Example
 
@@ -140,13 +140,12 @@ let papers = try await ArXivService().fetchLatestPapers(count: 20)
 
 ### 🎛️ Management by ArXivController
 
-``ArXivController`` handles ``ArXivPaper`` collections:
+``ArXivController`` (ViewModel) handles ``ArXivPaper`` collections:
 
 ```swift
-// Controller organizes papers by categories
+// ViewModel organizes papers by categories
 @Published var latestPapers: [ArXivPaper] = []
-@Published var csPapers: [ArXivPaper] = []
-@Published var mathPapers: [ArXivPaper] = []
+@Published var searchResults: [ArXivPaper] = []
 ```
 
 ### 🖥️ Visualization in Views

@@ -227,8 +227,8 @@ enum ArXivError: Error, LocalizedError {
 
 ### Guides
 - <doc:API-Guide> - ArXiv API integration
-- <doc:Architecture> - MVC architecture overview
-- <doc:ArXivController> - Controller documentation
+- <doc:Architecture> - MVVM architecture overview
+- <doc:ArXivController> - ViewModel documentation
 
 ---
 

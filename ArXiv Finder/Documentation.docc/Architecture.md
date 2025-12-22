@@ -1,10 +1,10 @@
-# MVC Architecture
+# MVVM Architecture
 
-The Model-View-Controller architecture implemented in ArXiv Finder.
+The Model-View-ViewModel architecture implemented in ArXiv Finder.
 
 ## 🏗️ Architecture Overview
 
-ArXiv Finder implements a modern **Model-View-Controller (MVC)** architecture adapted for SwiftUI, combining the benefits of traditional separation of responsibilities with SwiftUI's native reactivity.
+ArXiv Finder implements a modern **Model-View-ViewModel (MVVM)** architecture adapted for SwiftUI, combining the benefits of clear separation of concerns with SwiftUI's native reactivity.
 
 This architecture provides:
 - **Clear separation of responsibilities**
@@ -21,7 +21,7 @@ Each layer has specific and well-defined responsibilities:
 
 - **📊 Models**: Data management and domain logic
 - **🖥️ Views**: Presentation and user interaction
-- **🎛️ Controllers**: Coordination and business logic
+- **🎛️ ViewModels (Controllers)**: Coordination and state management
 - **🔌 Services**: External communication and utilities
 
 ### 2. 🔄 Reactive Programming
@@ -41,20 +41,19 @@ Each layer has specific and well-defined responsibilities:
 
 ```
 ArXiv Finder/
-├── Models/                    # 📊 Data models (M in MVC)
+├── Models/                    # 📊 Data models
 │   └── ArXivPaper.swift      # Main paper model
-├── Views/                     # 🖥️ Interface views (V in MVC)
+├── Views/                     # 🖥️ Interface views
 │   ├── MainView.swift        # Main application view
 │   ├── ArXivPaperRow.swift   # Individual row view
 │   ├── SidebarView.swift     # Sidebar view (macOS)
 │   ├── PapersListView.swift  # Paper list view
 │   ├── PaperDetailView.swift # Detailed paper view
 │   └── SettingsView.swift    # Settings view
-├── Controllers/               # 🎛️ Controllers (C in MVC)
-│   └── ArXivController.swift # Main controller
+├── Controllers/               # 🎛️ ViewModels
+│   └── ArXivController.swift # Main view model
 ├── Services/                  # 🔌 Auxiliary services
-│   ├── ArXivService.swift    # API service
-│   └── ArXivSimpleParser.swift # XML parser
+│   └── ArXivService.swift    # API service
 └── ArXiv_AppApp.swift        # Entry point
 ```
 
@@ -118,13 +117,13 @@ struct MainView: View {
 - ✅ Data presentation
 - ✅ User interaction
 - ✅ Multiplatform adaptation
-- ✅ Reactive binding with controllers
+- ✅ Reactive binding with view models
 
-### 🎛️ Controller (Controllers)
+### 🎛️ ViewModel (Controllers)
 
 **Location:** `Controllers/`
 
-Controllers coordinate business logic:
+ViewModels (implemented as Controllers in this project) coordinate business logic and state:
 
 ```swift
 /// Main controller managing state and logic
@@ -167,9 +166,9 @@ final class ArXivService: @unchecked Sendable {
     private let baseURL = "https://export.arxiv.org/api/query"
     
     func fetchLatestPapers() async throws -> [ArXivPaper] {
-        // API communication logic
+        // API communication logic using ArxivKit
         let data = try await performRequest()
-        return try ArXivSimpleParser().parse(data)
+        return try parse(data)
     }
 }
 ```
@@ -180,17 +179,17 @@ final class ArXivService: @unchecked Sendable {
 - ✅ Shared utilities
 - ✅ Network error handling
 
-## 🔄 Data Flow in MVC
+## 🔄 Data Flow in MVVM
 
 ```mermaid
 graph TB
     A[👤 User] -->|Interaction| B[🖥️ View]
-    B -->|Notifies action| C[🎛️ Controller]
+    B -->|Notifies action| C[🎛️ ViewModel]
     C -->|Requests data| D[🔌 Service]
     D -->|HTTP Request| E[🌐 ArXiv API]
-    E -->|XML Response| F[🔄 Parser]
+    E -->|XML Response| F[🔄 ArxivKit]
     F -->|Processed data| G[📊 Model]
-    G -->|@Published| H[🎛️ Controller]
+    G -->|@Published| H[🎛️ ViewModel]
     H -->|Updated state| I[🖥️ View]
     I -->|UI updated| A
 ```
@@ -198,12 +197,12 @@ graph TB
 ### Flow Steps:
 
 1. **👤 User interacts** with the View (tap, search, etc.)
-2. **🖥️ View notifies** the Controller about the action
-3. **🎛️ Controller processes** the business logic
-4. **🔌 Controller uses** Services to obtain data
+2. **🖥️ View notifies** the ViewModel about the action
+3. **🎛️ ViewModel processes** the business logic
+4. **🔌 ViewModel uses** Services to obtain data
 5. **🌐 Services make** requests to external APIs
 6. **📊 Models are updated** with new data
-7. **🔄 Controller publishes** changes via `@Published`
+7. **🔄 ViewModel publishes** changes via `@Published`
 8. **🖥️ View updates** automatically
 
 ## 🎯 Advantages of this Architecture
@@ -222,7 +221,7 @@ struct NewPaperView: View {
 ### ✅ Testability
 
 ```swift
-// Controllers can be tested independently
+// ViewModels can be tested independently
 class ArXivControllerTests: XCTestCase {
     func testLoadLatestPapers() async {
         let mockService = MockArXivService()
@@ -318,7 +317,7 @@ struct macOSMainView: View {
 ### 1. 🎯 Observer Pattern
 
 ```swift
-// The controller automatically notifies changes
+// The ViewModel automatically notifies changes
 @MainActor
 class ArXivController: ObservableObject {
     @Published var papers: [ArXivPaper] = [] // Automatic notification
@@ -380,7 +379,7 @@ class ArXivService {
 }
 
 class ArXivController {
-    // Only coordinates business logic
+    // Only coordinates business logic and state
 }
 
 struct PapersListView {
@@ -391,7 +390,7 @@ struct PapersListView {
 ### 2. ✅ Dependency Inversion
 
 ```swift
-// Controller depends on abstraction, not implementation
+// ViewModel depends on abstraction, not implementation
 protocol ArXivServiceProtocol {
     func fetchLatestPapers() async throws -> [ArXivPaper]
 }
@@ -422,7 +421,7 @@ struct ArXivPaper {
 ### 🏗️ Low Coupling
 
 - **Views** do not know service implementation
-- **Controllers** do not depend on UI details
+- **ViewModels** do not depend on UI details
 - **Services** are independent of business logic
 
 ### 🎯 High Cohesion
@@ -445,7 +444,7 @@ struct ArXivPaper {
 // Implement integration tests
 class IntegrationTests: XCTestCase {
     func testFullWorkflow() async {
-        // Full MVC flow test
+        // Full MVVM flow test
     }
 }
 ```
@@ -487,7 +486,7 @@ struct ArXivDesignSystem {
 ### 🔗 Main Components
 
 - ``ArXivPaper`` - Fundamental data model
-- ``ArXivController`` - Main MVC controller
+- ``ArXivController`` - Main ViewModel
 - ``ArXivService`` - Communication service
 - ``MainView`` - Main application view
 
@@ -495,8 +494,8 @@ struct ArXivDesignSystem {
 
 - <doc:API-Guide> - API integration guide
 - <doc:ArXivService> - Service documentation
-- <doc:ArXivController> - Controller documentation
+- <doc:ArXivController> - ViewModel documentation
 
 ---
 
-*This MVC architecture provides a solid foundation for the future growth and maintenance of ArXiv Finder, adapting to changing needs while maintaining code clarity and simplicity.* 
+*This MVVM architecture provides a solid foundation for the future growth and maintenance of ArXiv Finder, adapting to changing needs while maintaining code clarity and simplicity.*
